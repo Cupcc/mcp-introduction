@@ -1,496 +1,565 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Model Context Protocol - 开放式AI连接标准</title>
-    
-    <!-- TailwindCSS 通过CDN引入 -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    
-    <!-- 图标库 -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <script>
-        // 配置Tailwind主题
-        tailwind.config = {
-            darkMode: 'class',
-            theme: {
-                extend: {
-                    colors: {
-                        primary: {
-                            50: '#f0f9ff',
-                            100: '#e0f2fe',
-                            200: '#bae6fd',
-                            300: '#7dd3fc',
-                            400: '#38bdf8',
-                            500: '#0ea5e9',
-                            600: '#0284c7',
-                            700: '#0369a1',
-                            800: '#075985',
-                            900: '#0c4a6e',
-                        },
-                    },
-                    fontFamily: {
-                        sans: ['Inter', 'system-ui', 'sans-serif'],
-                    },
-                    boxShadow: {
-                        card: '0 0 0 1px rgba(0, 0, 0, 0.05), 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)',
-                        'card-dark': '0 0 0 1px rgba(255, 255, 255, 0.1), 0 10px 15px -3px rgba(0, 0, 0, 0.4), 0 4px 6px -2px rgba(0, 0, 0, 0.2)',
-                    },
-                }
-            }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Model Context Protocol - 开放式AI连接标准</title>
+
+  <!-- TailwindCSS 通过CDN引入 -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- 图标库 -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <script>
+    // 配置Tailwind主题
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            primary: {
+              50: '#f0f9ff',
+              100: '#e0f2fe',
+              200: '#bae6fd',
+              300: '#7dd3fc',
+              400: '#38bdf8',
+              500: '#0ea5e9',
+              600: '#0284c7',
+              700: '#0369a1',
+              800: '#075985',
+              900: '#0c4a6e',
+            },
+          },
+          fontFamily: {
+            sans: ['Inter', 'system-ui', 'sans-serif'],
+          },
+          boxShadow: {
+            card: '0 0 0 1px rgba(0, 0, 0, 0.05), 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)',
+            'card-dark': '0 0 0 1px rgba(255, 255, 255, 0.1), 0 10px 15px -3px rgba(0, 0, 0, 0.4), 0 4px 6px -2px rgba(0, 0, 0, 0.2)',
+          },
         }
-    </script>
-    
-    <style type="text/css">
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
-        
-        /* 基本过渡效果 */
-        * {
-            transition: background-color 0.3s, border-color 0.3s, color 0.3s, box-shadow 0.3s;
-        }
-        
-        /* 滚动平滑效果 */
-        html {
-            scroll-behavior: smooth;
-        }
-        
-        /* 加载动画 */
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        
-        .fade-in {
-            animation: fadeIn 0.5s ease-out forwards;
-        }
-        
-        /* 延迟加载动画 */
-        .delay-100 { animation-delay: 0.1s; }
-        .delay-200 { animation-delay: 0.2s; }
-        .delay-300 { animation-delay: 0.3s; }
-        .delay-400 { animation-delay: 0.4s; }
-        
-        /* 卡片悬停效果 */
-        .card-hover {
-            transition: all 0.3s;
-        }
-        
-        .card-hover:hover {
-            transform: translateY(-5px);
-        }
-        
-        /* 按钮悬停效果 */
-        .btn-hover {
-            transition: all 0.2s;
-        }
-        
-        .btn-hover:hover {
-            transform: scale(1.05);
-        }
-    </style>
+      }
+    }
+  </script>
+
+  <style type="text/css">
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+    /* 基本过渡效果 */
+    * {
+      transition: background-color 0.3s, border-color 0.3s, color 0.3s, box-shadow 0.3s;
+    }
+
+    /* 滚动平滑效果 */
+    html {
+      scroll-behavior: smooth;
+    }
+
+    /* 加载动画 */
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .fade-in {
+      animation: fadeIn 0.5s ease-out forwards;
+    }
+
+    /* 延迟加载动画 */
+    .delay-100 {
+      animation-delay: 0.1s;
+    }
+
+    .delay-200 {
+      animation-delay: 0.2s;
+    }
+
+    .delay-300 {
+      animation-delay: 0.3s;
+    }
+
+    .delay-400 {
+      animation-delay: 0.4s;
+    }
+
+    /* 卡片悬停效果 */
+    .card-hover {
+      transition: all 0.3s;
+    }
+
+    .card-hover:hover {
+      transform: translateY(-5px);
+    }
+
+    /* 按钮悬停效果 */
+    .btn-hover {
+      transition: all 0.2s;
+    }
+
+    .btn-hover:hover {
+      transform: scale(1.05);
+    }
+  </style>
 </head>
 
 <body class="font-sans bg-gray-50 text-gray-800 dark:bg-gray-900 dark:text-gray-200">
-    <!-- 检测系统主题并应用 -->
-    <script>
-        // 检测系统主题
-        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-            document.documentElement.classList.add('dark');
-        }
-        
-        // 主题切换功能
-        function toggleDarkMode() {
-            document.documentElement.classList.toggle('dark');
-            updateThemeIcon();
-        }
-        
-        // 更新主题图标
-        function updateThemeIcon() {
-            const isDark = document.documentElement.classList.contains('dark');
-            const themeIcon = document.getElementById('theme-icon');
-            if (themeIcon) {
-                themeIcon.classList = isDark ? 'fas fa-sun' : 'fas fa-moon';
-            }
-        }
-        
-        // 页面加载完成后执行
-        window.addEventListener('DOMContentLoaded', () => {
-            updateThemeIcon();
-            
-            // 添加渐入动画
-            const fadeElements = document.querySelectorAll('.fade-in');
-            fadeElements.forEach(el => {
-                el.style.opacity = '0';
-                setTimeout(() => {
-                    el.style.opacity = '1';
-                }, 100);
-            });
-        });
-    </script>
+  <!-- 检测系统主题并应用 -->
+  <script>
+    // 检测系统主题
+    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+      document.documentElement.classList.add('dark');
+    }
 
-    <!-- 导航栏 -->
-    <nav class="sticky top-0 z-50 backdrop-blur-md bg-white/80 dark:bg-gray-900/80 border-b border-gray-200 dark:border-gray-700 shadow-sm">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between h-16">
-                <div class="flex items-center">
-                    <a href="#" class="flex items-center">
-                        <i class="fas fa-project-diagram text-primary-600 dark:text-primary-400 text-2xl mr-2"></i>
-                        <span class="font-bold text-xl">Model Context Protocol</span>
-                    </a>
-                </div>
-                <div class="flex items-center space-x-4">
-                    <a href="#overview" class="px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-100 dark:hover:bg-gray-800">概述</a>
-                    <a href="#architecture" class="px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-100 dark:hover:bg-gray-800">架构</a>
-                    <a href="#advantages" class="px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-100 dark:hover:bg-gray-800">优势</a>
-                    <a href="#applications" class="px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-100 dark:hover:bg-gray-800">应用</a>
-                    <button onclick="toggleDarkMode()" class="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 focus:outline-none" aria-label="切换主题">
-                        <i id="theme-icon" class="fas fa-moon"></i>
-                    </button>
-                </div>
-            </div>
+    // 主题切换功能
+    function toggleDarkMode() {
+      document.documentElement.classList.toggle('dark');
+      updateThemeIcon();
+    }
+
+    // 更新主题图标
+    function updateThemeIcon() {
+      const isDark = document.documentElement.classList.contains('dark');
+      const themeIcon = document.getElementById('theme-icon');
+      if (themeIcon) {
+        themeIcon.classList = isDark ? 'fas fa-sun' : 'fas fa-moon';
+      }
+    }
+
+    // 页面加载完成后执行
+    window.addEventListener('DOMContentLoaded', () => {
+      updateThemeIcon();
+
+      // 添加渐入动画
+      const fadeElements = document.querySelectorAll('.fade-in');
+      fadeElements.forEach(el => {
+        el.style.opacity = '0';
+        setTimeout(() => {
+          el.style.opacity = '1';
+        }, 100);
+      });
+    });
+  </script>
+
+  <!-- 导航栏 -->
+  <nav
+    class="sticky top-0 z-50 backdrop-blur-md bg-white/80 dark:bg-gray-900/80 border-b border-gray-200 dark:border-gray-700 shadow-sm">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between h-16">
+        <div class="flex items-center">
+          <a href="#" class="flex items-center">
+            <i class="fas fa-project-diagram text-primary-600 dark:text-primary-400 text-2xl mr-2"></i>
+            <span class="font-bold text-xl">Model Context Protocol</span>
+          </a>
         </div>
-    </nav>
-
-    <!-- 英雄区域 -->
-    <header class="bg-gradient-to-br from-primary-500 to-primary-700 dark:from-primary-700 dark:to-primary-900 text-white py-20">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex flex-col md:flex-row items-center">
-                <div class="md:w-1/2 mb-10 md:mb-0 fade-in">
-                    <h1 class="text-4xl sm:text-5xl font-bold mb-4">Model Context Protocol</h1>
-                    <p class="text-xl sm:text-2xl opacity-90 mb-8">连接AI模型与数据源的开放标准协议</p>
-                    <div class="flex flex-col sm:flex-row gap-4">
-                        <a href="#overview" class="btn-hover inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-primary-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500">
-                            了解更多
-                            <i class="fas fa-arrow-right ml-2"></i>
-                        </a>
-                        <a href="https://github.com/modelcontextprotocol" target="_blank" class="btn-hover inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-primary-800 bg-opacity-60 hover:bg-opacity-70 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500">
-                            <i class="fab fa-github mr-2"></i>
-                            GitHub 仓库
-                        </a>
-                    </div>
-                </div>
-                <div class="md:w-1/2 flex justify-center fade-in delay-200">
-                    <div class="w-full max-w-md relative">
-                        <!-- 图形化展示 -->
-                        <svg class="w-full" viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
-                            <defs>
-                                <linearGradient id="bgGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                                    <stop offset="0%" stop-color="#ffffff" stop-opacity="0.1"/>
-                                    <stop offset="100%" stop-color="#ffffff" stop-opacity="0.3"/>
-                                </linearGradient>
-                            </defs>
-                            
-                            <!-- 背景 -->
-                            <rect x="10" y="10" width="380" height="280" rx="20" fill="url(#bgGradient)"/>
-                            
-                            <!-- 中心LLM节点 -->
-                            <circle cx="200" cy="150" r="50" fill="#ffffff" opacity="0.9"/>
-                            <text x="200" y="155" font-size="16" text-anchor="middle" fill="#0369a1" font-weight="bold">LLM</text>
-                            
-                            <!-- 连接线 -->
-                            <line x1="200" y1="80" x2="200" y2="100" stroke="#ffffff" stroke-width="3" stroke-dasharray="5,5"/>
-                            <line x1="200" y1="200" x2="200" y2="220" stroke="#ffffff" stroke-width="3" stroke-dasharray="5,5"/>
-                            <line x1="140" y1="150" x2="110" y2="150" stroke="#ffffff" stroke-width="3" stroke-dasharray="5,5"/>
-                            <line x1="260" y1="150" x2="290" y2="150" stroke="#ffffff" stroke-width="3" stroke-dasharray="5,5"/>
-                            
-                            <!-- 外部连接节点 -->
-                            <circle cx="200" cy="60" r="30" fill="#ffffff" opacity="0.7"/>
-                            <text x="200" y="65" font-size="12" text-anchor="middle" fill="#0369a1">应用</text>
-                            
-                            <circle cx="200" cy="240" r="30" fill="#ffffff" opacity="0.7"/>
-                            <text x="200" y="245" font-size="12" text-anchor="middle" fill="#0369a1">数据库</text>
-                            
-                            <circle cx="80" cy="150" r="30" fill="#ffffff" opacity="0.7"/>
-                            <text x="80" y="155" font-size="12" text-anchor="middle" fill="#0369a1">文件</text>
-                            
-                            <circle cx="320" cy="150" r="30" fill="#ffffff" opacity="0.7"/>
-                            <text x="320" y="155" font-size="12" text-anchor="middle" fill="#0369a1">API</text>
-                            
-                            <!-- 箭头动画 -->
-                            <circle cx="200" cy="90" r="5" fill="#ffffff">
-                                <animate attributeName="opacity" values="0;1;0" dur="2s" repeatCount="indefinite"/>
-                            </circle>
-                            
-                            <circle cx="200" cy="210" r="5" fill="#ffffff">
-                                <animate attributeName="opacity" values="0;1;0" dur="2s" repeatCount="indefinite" begin="0.5s"/>
-                            </circle>
-                            
-                            <circle cx="125" cy="150" r="5" fill="#ffffff">
-                                <animate attributeName="opacity" values="0;1;0" dur="2s" repeatCount="indefinite" begin="1s"/>
-                            </circle>
-                            
-                            <circle cx="275" cy="150" r="5" fill="#ffffff">
-                                <animate attributeName="opacity" values="0;1;0" dur="2s" repeatCount="indefinite" begin="1.5s"/>
-                            </circle>
-                        </svg>
-                    </div>
-                </div>
-            </div>
+        <div class="flex items-center space-x-4">
+          <a href="#overview"
+            class="px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-100 dark:hover:bg-gray-800">概述</a>
+          <a href="#architecture"
+            class="px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-100 dark:hover:bg-gray-800">架构</a>
+          <a href="#advantages"
+            class="px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-100 dark:hover:bg-gray-800">优势</a>
+          <a href="#applications"
+            class="px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-100 dark:hover:bg-gray-800">应用</a>
+          <a href="#ecosystem"
+            class="px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-100 dark:hover:bg-gray-800">生态系统</a>
+          <button onclick="toggleDarkMode()"
+            class="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 focus:outline-none" aria-label="切换主题">
+            <i id="theme-icon" class="fas fa-moon"></i>
+          </button>
         </div>
-    </header>
+      </div>
+    </div>
+  </nav>
 
-    <!-- 主要内容 -->
-    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        <!-- 概述部分 -->
-        <section id="overview" class="mb-20 fade-in">
-            <div class="border-l-4 border-primary-500 pl-4 mb-8">
-                <h2 class="text-3xl font-bold">什么是 Model Context Protocol?</h2>
+  <!-- 英雄区域 -->
+  <header
+    class="bg-gradient-to-br from-primary-500 to-primary-700 dark:from-primary-700 dark:to-primary-900 text-white py-20">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex flex-col md:flex-row items-center">
+        <div class="md:w-1/2 mb-10 md:mb-0 fade-in">
+          <h1 class="text-4xl sm:text-5xl font-bold mb-4">Model Context Protocol</h1>
+          <p class="text-xl sm:text-2xl opacity-90 mb-8">连接AI模型与数据源的开放标准协议</p>
+          <div class="flex flex-col sm:flex-row gap-4">
+            <a href="#overview"
+              class="btn-hover inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-primary-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500">
+              了解更多
+              <i class="fas fa-arrow-right ml-2"></i>
+            </a>
+            <a href="https://github.com/modelcontextprotocol" target="_blank"
+              class="btn-hover inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-primary-800 bg-opacity-60 hover:bg-opacity-70 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500">
+              <i class="fab fa-github mr-2"></i>
+              GitHub 仓库
+            </a>
+          </div>
+        </div>
+        <div class="md:w-1/2 flex justify-center fade-in delay-200">
+          <div class="w-full max-w-md relative">
+            <!-- 图形化展示 -->
+            <svg class="w-full" viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <linearGradient id="bgGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#ffffff" stop-opacity="0.1" />
+                  <stop offset="100%" stop-color="#ffffff" stop-opacity="0.3" />
+                </linearGradient>
+              </defs>
+
+              <!-- 背景 -->
+              <rect x="10" y="10" width="380" height="280" rx="20" fill="url(#bgGradient)" />
+
+              <!-- 中心LLM节点 -->
+              <circle cx="200" cy="150" r="50" fill="#ffffff" opacity="0.9" />
+              <text x="200" y="155" font-size="16" text-anchor="middle" fill="#0369a1" font-weight="bold">LLM</text>
+
+              <!-- 连接线 -->
+              <line x1="200" y1="80" x2="200" y2="100" stroke="#ffffff" stroke-width="3" stroke-dasharray="5,5" />
+              <line x1="200" y1="200" x2="200" y2="220" stroke="#ffffff" stroke-width="3" stroke-dasharray="5,5" />
+              <line x1="140" y1="150" x2="110" y2="150" stroke="#ffffff" stroke-width="3" stroke-dasharray="5,5" />
+              <line x1="260" y1="150" x2="290" y2="150" stroke="#ffffff" stroke-width="3" stroke-dasharray="5,5" />
+
+              <!-- 外部连接节点 -->
+              <circle cx="200" cy="60" r="30" fill="#ffffff" opacity="0.7" />
+              <text x="200" y="65" font-size="12" text-anchor="middle" fill="#0369a1">应用</text>
+
+              <circle cx="200" cy="240" r="30" fill="#ffffff" opacity="0.7" />
+              <text x="200" y="245" font-size="12" text-anchor="middle" fill="#0369a1">数据库</text>
+
+              <circle cx="80" cy="150" r="30" fill="#ffffff" opacity="0.7" />
+              <text x="80" y="155" font-size="12" text-anchor="middle" fill="#0369a1">文件</text>
+
+              <circle cx="320" cy="150" r="30" fill="#ffffff" opacity="0.7" />
+              <text x="320" y="155" font-size="12" text-anchor="middle" fill="#0369a1">API</text>
+
+              <!-- 箭头动画 -->
+              <circle cx="200" cy="90" r="5" fill="#ffffff">
+                <animate attributeName="opacity" values="0;1;0" dur="2s" repeatCount="indefinite" />
+              </circle>
+
+              <circle cx="200" cy="210" r="5" fill="#ffffff">
+                <animate attributeName="opacity" values="0;1;0" dur="2s" repeatCount="indefinite" begin="0.5s" />
+              </circle>
+
+              <circle cx="125" cy="150" r="5" fill="#ffffff">
+                <animate attributeName="opacity" values="0;1;0" dur="2s" repeatCount="indefinite" begin="1s" />
+              </circle>
+
+              <circle cx="275" cy="150" r="5" fill="#ffffff">
+                <animate attributeName="opacity" values="0;1;0" dur="2s" repeatCount="indefinite" begin="1.5s" />
+              </circle>
+            </svg>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- 主要内容 -->
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+    <!-- 概述部分 -->
+    <section id="overview" class="mb-20 fade-in">
+      <div class="border-l-4 border-primary-500 pl-4 mb-8">
+        <h2 class="text-3xl font-bold">什么是 Model Context Protocol?</h2>
+      </div>
+
+      <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 sm:p-8 mb-8">
+        <p class="text-lg mb-6">
+          Model Context Protocol（MCP）是由 Anthropic 开源的一种开放协议，旨在标准化应用程序向大型语言模型（LLM）提供上下文的方式。可以将 MCP 比作 AI 应用程序的 USB-C
+          接口，正如 USB-C 为连接设备与各种外设提供了标准化方式，MCP 为 AI 模型与各种数据源和工具的连接提供了统一的标准。
+        </p>
+        <p class="text-lg mb-6">
+          当前，即使是最先进的 AI 模型也面临两个关键限制：它们无法访问训练数据之外的信息，也无法执行预测下一个标记之外的操作。这种隔离限制了 AI 的实用性，使其难以应对实时需求或复杂任务。MCP 通过标准化 AI
+          模型与外部数据和工具的连接，解决了这一根本性问题，从而显著提升 AI 助手的响应质量和相关性。
+        </p>
+
+        <div class="bg-primary-50 dark:bg-gray-700 rounded-lg p-6 mb-6">
+          <h3 class="text-xl font-semibold mb-4 flex items-center">
+            <i class="fas fa-lightbulb text-primary-500 mr-2"></i>
+            与现有技术的区别
+          </h3>
+          <p class="mb-2">与传统的API集成和RAG（检索增强生成）技术相比，MCP具有以下优势：</p>
+          <ul class="list-disc list-inside mb-6">
+            <li><strong>标准化</strong>：MCP提供了一个通用的协议，减少了集成的工作量。</li>
+            <li><strong>实时性</strong>：MCP支持实时数据访问和操作，适用于动态变化的场景。</li>
+            <li><strong>灵活性</strong>：MCP允许AI模型与多种工具和数据源交互，扩展了其应用范围。</li>
+          </ul>
+        </div>
+
+
+        <div class="bg-primary-50 dark:bg-gray-700 rounded-lg p-6 mb-6">
+          <h3 class="text-xl font-semibold mb-4 flex items-center">
+            <i class="fas fa-lightbulb text-primary-500 mr-2"></i>
+            核心理念
+          </h3>
+          <p class="mb-2">
+            - <strong>解决隔离问题</strong>：MCP 打破了 AI 模型与外部世界之间的壁垒，使其能够访问实时数据并与外部系统交互。
+          </p>
+          <p class="mb-0">
+            - <strong>增强AI能力</strong>：通过集成专业工具和数据源，MCP 赋予 AI 超出其内置能力的强大功能。
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 架构部分 -->
+    <section id="architecture" class="mb-20 fade-in delay-100">
+      <div class="border-l-4 border-primary-500 pl-4 mb-8">
+        <h2 class="text-3xl font-bold">架构组成</h2>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+        <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden card-hover">
+          <div class="bg-primary-500 dark:bg-primary-700 p-4">
+            <h3 class="text-xl font-semibold text-white">客户端-服务器架构</h3>
+          </div>
+          <div class="p-6">
+            <p class="mb-4">MCP采用客户端-服务器通信架构，其中AI模型（客户端）可以向处理特定服务集成的专用服务器发送请求，这些服务器处理这些请求并返回AI可以纳入其响应的格式化结果。</p>
+            <ul class="space-y-2">
+              <li class="flex items-start">
+                <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                <span>标准化：MCP为语言模型与工具交互提供了标准化方式，促进互操作性。</span>
+              </li>
+              <li class="flex items-start">
+                <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                <span>工具集成：使语言模型能够使用外部工具，增强其功能和适用性。</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden card-hover">
+          <div class="bg-primary-500 dark:bg-primary-700 p-4">
+            <h3 class="text-xl font-semibold text-white">主要组件</h3>
+          </div>
+          <div class="p-6">
+            <ul class="space-y-4">
+              <li class="flex items-start">
+                <div class="bg-primary-100 dark:bg-primary-900 rounded-full p-2 mr-3">
+                  <i class="fas fa-desktop text-primary-600 dark:text-primary-400"></i>
+                </div>
+                <div>
+                  <h4 class="font-medium">MCP主机</h4>
+                  <p class="text-sm text-gray-600 dark:text-gray-400">寻求通过MCP访问数据的AI应用程序或接口，例如IDE或AI工具，它们发起数据或操作请求。</p>
+                </div>
+              </li>
+              <li class="flex items-start">
+                <div class="bg-primary-100 dark:bg-primary-900 rounded-full p-2 mr-3">
+                  <i class="fas fa-exchange-alt text-primary-600 dark:text-primary-400"></i>
+                </div>
+                <div>
+                  <h4 class="font-medium">MCP客户端</h4>
+                  <p class="text-sm text-gray-600 dark:text-gray-400">与MCP服务器保持一对一连接的协议客户端，充当转发请求和响应的中介。</p>
+                </div>
+              </li>
+              <li class="flex items-start">
+                <div class="bg-primary-100 dark:bg-primary-900 rounded-full p-2 mr-3">
+                  <i class="fas fa-server text-primary-600 dark:text-primary-400"></i>
+                </div>
+                <div>
+                  <h4 class="font-medium">MCP服务器</h4>
+                  <p class="text-sm text-gray-600 dark:text-gray-400">通过标准化的Model Context
+                    Protocol暴露特定能力的轻量级程序，连接到本地或远程数据源。</p>
+                </div>
+              </li>
+              <li class="flex items-start">
+                <div class="bg-primary-100 dark:bg-primary-900 rounded-full p-2 mr-3">
+                  <i class="fas fa-database text-primary-600 dark:text-primary-400"></i>
+                </div>
+                <div>
+                  <h4 class="font-medium">数据源</h4>
+                  <p class="text-sm text-gray-600 dark:text-gray-400">包括计算机的文件、数据库和MCP服务器可以安全访问的服务，如读取本地文档或查询数据库。</p>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- 架构图 -->
+      <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 sm:p-8 mb-8">
+        <h3 class="text-xl font-semibold mb-6">MCP架构图</h3>
+
+        <div class="w-full relative flex justify-center">
+          <svg class="w-full max-w-2xl" viewBox="0 0 800 400" xmlns="http://www.w3.org/2000/svg">
+            <!-- 背景 -->
+            <rect width="800" height="400" fill="none" />
+
+            <!-- 客户端区域 -->
+            <rect x="20" y="50" width="280" height="300" rx="10" fill="#f0f9ff" class="dark:opacity-20" stroke="#0ea5e9"
+              stroke-width="2" />
+            <text x="160" y="30" text-anchor="middle" fill="currentColor" font-size="18"
+              font-weight="bold">MCP客户端</text>
+
+            <!-- 服务器区域 -->
+            <rect x="500" y="50" width="280" height="300" rx="10" fill="#f0f9ff" class="dark:opacity-20"
+              stroke="#0ea5e9" stroke-width="2" />
+            <text x="640" y="30" text-anchor="middle" fill="currentColor" font-size="18"
+              font-weight="bold">MCP服务器</text>
+
+            <!-- 客户端组件 -->
+            <rect x="60" y="120" width="200" height="60" rx="5" fill="#0ea5e9" opacity="0.8" />
+            <text x="160" y="155" text-anchor="middle" fill="white" font-size="14">AI模型</text>
+
+            <rect x="60" y="220" width="200" height="60" rx="5" fill="#0ea5e9" opacity="0.6" />
+            <text x="160" y="255" text-anchor="middle" fill="white" font-size="14">应用接口</text>
+
+            <!-- 服务器组件 -->
+            <rect x="540" y="100" width="200" height="40" rx="5" fill="#0ea5e9" opacity="0.6" />
+            <text x="640" y="125" text-anchor="middle" fill="white" font-size="12">文件系统</text>
+
+            <rect x="540" y="160" width="200" height="40" rx="5" fill="#0ea5e9" opacity="0.6" />
+            <text x="640" y="185" text-anchor="middle" fill="white" font-size="12">数据库</text>
+
+            <rect x="540" y="220" width="200" height="40" rx="5" fill="#0ea5e9" opacity="0.6" />
+            <text x="640" y="245" text-anchor="middle" fill="white" font-size="12">API</text>
+
+            <rect x="540" y="280" width="200" height="40" rx="5" fill="#0ea5e9" opacity="0.6" />
+            <text x="640" y="305" text-anchor="middle" fill="white" font-size="12">开发环境</text>
+
+            <!-- 连接线 -->
+            <path d="M 300 150 L 350 150 Q 380 150 380 180 L 380 240 Q 380 270 410 270 L 500 270
+            " fill="none" stroke="#0ea5e9" stroke-width="3" />
+            <text x="420" y="210" text-anchor="middle" fill="currentColor" font-size="14">JSON-RPC</text>
+            <text x="420" y="230" text-anchor="middle" fill="currentColor" font-size="10">双向通信</text>
+
+            <!-- 数据流动动画 -->
+            <circle r="5" fill="#0ea5e9">
+              <animateMotion path="M 300 150 L 350 150 Q 380 150 380 180 L 380 240 Q 380 270 410 270 L 500 270" dur="3s"
+                repeatCount="indefinite" />
+            </circle>
+
+            <circle r="5" fill="#0ea5e9">
+              <animateMotion path="M 500 270 L 410 270 Q 380 270 380 240 L 380 180 Q 380 150 350 150 L 300 150" dur="3s"
+                repeatCount="indefinite" begin="1.5s" />
+            </circle>
+          </svg>
+        </div>
+
+        <p class="text-center text-sm text-gray-600 dark:text-gray-400 mt-4">MCP建立AI模型与数据源之间的标准化双向通信</p>
+      </div>
+    </section>
+
+    <!-- 优势部分 -->
+    <section id="advantages" class="mb-20 fade-in delay-200">
+      <div class="border-l-4 border-primary-500 pl-4 mb-8">
+        <h2 class="text-3xl font-bold">主要优势</h2>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 card-hover">
+          <div
+            class="flex items-center justify-center h-12 w-12 rounded-md bg-primary-100 dark:bg-primary-900 text-primary-600 dark:text-primary-400 mb-4">
+            <i class="fas fa-sync-alt text-xl"></i>
+          </div>
+          <h3 class="text-lg font-semibold mb-2">标准化互操作</h3>
+          <p class="text-gray-600 dark:text-gray-400">MCP为AI能力建立了协议标准，让通用AI助手能够与使用此协议构建的其他AI应用程序或代理无缝集成。</p>
+        </div>
+
+        <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 card-hover">
+          <div
+            class="flex items-center justify-center h-12 w-12 rounded-md bg-primary-100 dark:bg-primary-900 text-primary-600 dark:text-primary-400 mb-4">
+            <i class="fas fa-cogs text-xl"></i>
+          </div>
+          <h3 class="text-lg font-semibold mb-2">简化集成</h3>
+          <p class="text-gray-600 dark:text-gray-400">MCP将M×N集成问题转变为M+N问题，开发人员不必为每个需要访问的数据源实现自定义集成，极大节省了开发时间和维护成本。</p>
+        </div>
+
+        <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 card-hover">
+          <div
+            class="flex items-center justify-center h-12 w-12 rounded-md bg-primary-100 dark:bg-primary-900 text-primary-600 dark:text-primary-400 mb-4">
+            <i class="fas fa-shield-alt text-xl"></i>
+          </div>
+          <h3 class="text-lg font-semibold mb-2">安全可靠</h3>
+          <p class="text-gray-600 dark:text-gray-400">MCP通过精细权限等特性维护安全性，同时依赖于JSON-RPC 2.0和灵活传输，确保高效且安全的通信。</p>
+        </div>
+
+        <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 card-hover">
+          <div
+            class="flex items-center justify-center h-12 w-12 rounded-md bg-primary-100 dark:bg-primary-900 text-primary-600 dark:text-primary-400 mb-4">
+            <i class="fas fa-chart-line text-xl"></i>
+          </div>
+          <h3 class="text-lg font-semibold mb-2">可扩展性</h3>
+          <p class="text-gray-600 dark:text-gray-400">标准化协议意味着开发者可以集成更多AI服务，同时最大限度地减少管理越来越多交互的复杂性，使系统更具可扩展性。</p>
+        </div>
+      </div>
+
+      <!-- 引用卡片 -->
+      <div class="bg-primary-50 dark:bg-gray-700 rounded-xl p-6 sm:p-8 border-l-4 border-primary-500">
+        <div class="flex items-start">
+          <i class="fas fa-quote-left text-3xl text-primary-400 mr-4 mt-1"></i>
+          <blockquote class="mb-4">
+            <p class="text-lg italic mb-4">"开源技术如Model Context Protocol是连接AI与现实世界应用程序的桥梁，确保创新是可访问的、透明的，并植根于协作。"</p>
+            <footer class="text-sm text-gray-600 dark:text-gray-400">
+              Dhanji R. Prasanna, Block首席技术官
+            </footer>
+          </blockquote>
+        </div>
+      </div>
+    </section>
+
+    <!-- 应用场景部分 -->
+    <section id="applications" class="mb-20 fade-in delay-300">
+      <div class="border-l-4 border-primary-500 pl-4 mb-8">
+        <h2 class="text-3xl font-bold">应用场景</h2>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
+        <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden card-hover">
+          <div class="h-2 bg-green-500"></div>
+          <div class="p-6">
+            <div class="rounded-full bg-green-100 dark:bg-green-900 w-12 h-12 flex items-center justify-center mb-4">
+              <i class="fas fa-code text-green-600 dark:text-green-400"></i>
             </div>
-            
-            <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 sm:p-8 mb-8">
-                <p class="text-lg mb-6">Model Context Protocol（MCP）是一种开放协议，用于标准化应用程序向LLM（大型语言模型）提供上下文的方式。可以将MCP比作AI应用程序的USB-C接口，正如USB-C为连接设备与各种外设提供了标准化方式，MCP提供了连接AI模型与各种数据源和工具的标准化方式。</p>
-                
-                <p class="text-lg mb-6">MCP由Anthropic开源，旨在解决AI助手与数据源之间的连接问题。即使最先进的模型也受到其与数据隔离的限制—被信息孤岛和传统系统困住。每个新的数据源都需要自己的自定义实现，使真正连接的系统难以扩展。</p>
-                
-                <div class="bg-primary-50 dark:bg-gray-700 rounded-lg p-6 mb-6">
-                    <h3 class="text-xl font-semibold mb-4 flex items-center">
-                        <i class="fas fa-lightbulb text-primary-500 mr-2"></i>
-                        核心理念
-                    </h3>
-                    <p class="mb-0">现今的前沿模型有两个关键限制：它们不知道训练数据之外的信息，也无法执行预测下一个标记之外的操作。MCP通过标准化AI模型与外部数据和工具的连接，解决了这个根本性问题，使AI系统能够获取实时数据，在外部系统中执行操作，并利用超出其内置能力的专业工具。</p>
-                </div>
+            <h3 class="text-xl font-semibold mb-3">开发环境集成</h3>
+            <p class="text-gray-600 dark:text-gray-400">Cursor等开发工具正在使用MCP增强其平台，允许AI助手直接查询数据库、访问本地文件系统，而无需手动输入架构或操作数据。
+            </p>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden card-hover">
+          <div class="h-2 bg-blue-500"></div>
+          <div class="p-6">
+            <div class="rounded-full bg-blue-100 dark:bg-blue-900 w-12 h-12 flex items-center justify-center mb-4">
+              <i class="fas fa-database text-blue-600 dark:text-blue-400"></i>
             </div>
-        </section>
-        
-        <!-- 架构部分 -->
-        <section id="architecture" class="mb-20 fade-in delay-100">
-            <div class="border-l-4 border-primary-500 pl-4 mb-8">
-                <h2 class="text-3xl font-bold">架构组成</h2>
+            <h3 class="text-xl font-semibold mb-3">企业数据连接</h3>
+            <p class="text-gray-600 dark:text-gray-400">已有多家企业如Block和Apollo集成了MCP到他们的系统中，Microsoft也在Copilot
+              Studio中支持MCP，使开发者能够轻松将AI应用和代理添加到系统中。</p>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden card-hover">
+          <div class="h-2 bg-purple-500"></div>
+          <div class="p-6">
+            <div class="rounded-full bg-purple-100 dark:bg-purple-900 w-12 h-12 flex items-center justify-center mb-4">
+              <i class="fas fa-puzzle-piece text-purple-600 dark:text-purple-400"></i>
             </div>
-            
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
-                <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden card-hover">
-                    <div class="bg-primary-500 dark:bg-primary-700 p-4">
-                        <h3 class="text-xl font-semibold text-white">客户端-服务器架构</h3>
-                    </div>
-                    <div class="p-6">
-                        <p class="mb-4">MCP采用客户端-服务器通信架构，其中AI模型（客户端）可以向处理特定服务集成的专用服务器发送请求，这些服务器处理这些请求并返回AI可以纳入其响应的格式化结果。</p>
-                        <ul class="space-y-2">
-                            <li class="flex items-start">
-                                <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
-                                <span>标准化：MCP为语言模型与工具交互提供了标准化方式，促进互操作性。</span>
-                            </li>
-                            <li class="flex items-start">
-                                <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
-                                <span>工具集成：使语言模型能够使用外部工具，增强其功能和适用性。</span>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-                
-                <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden card-hover">
-                    <div class="bg-primary-500 dark:bg-primary-700 p-4">
-                        <h3 class="text-xl font-semibold text-white">主要组件</h3>
-                    </div>
-                    <div class="p-6">
-                        <ul class="space-y-4">
-                            <li class="flex items-start">
-                                <div class="bg-primary-100 dark:bg-primary-900 rounded-full p-2 mr-3">
-                                    <i class="fas fa-desktop text-primary-600 dark:text-primary-400"></i>
-                                </div>
-                                <div>
-                                    <h4 class="font-medium">MCP主机</h4>
-                                    <p class="text-sm text-gray-600 dark:text-gray-400">寻求通过MCP访问数据的AI应用程序或接口，例如IDE或AI工具，它们发起数据或操作请求。</p>
-                                </div>
-                            </li>
-                            <li class="flex items-start">
-                                <div class="bg-primary-100 dark:bg-primary-900 rounded-full p-2 mr-3">
-                                    <i class="fas fa-exchange-alt text-primary-600 dark:text-primary-400"></i>
-                                </div>
-                                <div>
-                                    <h4 class="font-medium">MCP客户端</h4>
-                                    <p class="text-sm text-gray-600 dark:text-gray-400">与MCP服务器保持一对一连接的协议客户端，充当转发请求和响应的中介。</p>
-                                </div>
-                            </li>
-                            <li class="flex items-start">
-                                <div class="bg-primary-100 dark:bg-primary-900 rounded-full p-2 mr-3">
-                                    <i class="fas fa-server text-primary-600 dark:text-primary-400"></i>
-                                </div>
-                                <div>
-                                    <h4 class="font-medium">MCP服务器</h4>
-                                    <p class="text-sm text-gray-600 dark:text-gray-400">通过标准化的Model Context Protocol暴露特定能力的轻量级程序，连接到本地或远程数据源。</p>
-                                </div>
-                            </li>
-                            <li class="flex items-start">
-                                <div class="bg-primary-100 dark:bg-primary-900 rounded-full p-2 mr-3">
-                                    <i class="fas fa-database text-primary-600 dark:text-primary-400"></i>
-                                </div>
-                                <div>
-                                    <h4 class="font-medium">数据源</h4>
-                                    <p class="text-sm text-gray-600 dark:text-gray-400">包括计算机的文件、数据库和MCP服务器可以安全访问的服务，如读取本地文档或查询数据库。</p>
-                                </div>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- 架构图 -->
-            <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 sm:p-8 mb-8">
-                <h3 class="text-xl font-semibold mb-6">MCP架构图</h3>
-                
-                <div class="w-full relative flex justify-center">
-                    <svg class="w-full max-w-2xl" viewBox="0 0 800 400" xmlns="http://www.w3.org/2000/svg">
-                        <!-- 背景 -->
-                        <rect width="800" height="400" fill="none" />
-                        
-                        <!-- 客户端区域 -->
-                        <rect x="20" y="50" width="280" height="300" rx="10" fill="#f0f9ff" class="dark:opacity-20" stroke="#0ea5e9" stroke-width="2" />
-                        <text x="160" y="30" text-anchor="middle" fill="currentColor" font-size="18" font-weight="bold">MCP客户端</text>
-                        
-                        <!-- 服务器区域 -->
-                        <rect x="500" y="50" width="280" height="300" rx="10" fill="#f0f9ff" class="dark:opacity-20" stroke="#0ea5e9" stroke-width="2" />
-                        <text x="640" y="30" text-anchor="middle" fill="currentColor" font-size="18" font-weight="bold">MCP服务器</text>
-                        
-                        <!-- 客户端组件 -->
-                        <rect x="60" y="120" width="200" height="60" rx="5" fill="#0ea5e9" opacity="0.8" />
-                        <text x="160" y="155" text-anchor="middle" fill="white" font-size="14">AI模型</text>
-                        
-                        <rect x="60" y="220" width="200" height="60" rx="5" fill="#0ea5e9" opacity="0.6" />
-                        <text x="160" y="255" text-anchor="middle" fill="white" font-size="14">应用接口</text>
-                        
-                        <!-- 服务器组件 -->
-                        <rect x="540" y="100" width="200" height="40" rx="5" fill="#0ea5e9" opacity="0.6" />
-                        <text x="640" y="125" text-anchor="middle" fill="white" font-size="12">文件系统</text>
-                        
-                        <rect x="540" y="160" width="200" height="40" rx="5" fill="#0ea5e9" opacity="0.6" />
-                        <text x="640" y="185" text-anchor="middle" fill="white" font-size="12">数据库</text>
-                        
-                        <rect x="540" y="220" width="200" height="40" rx="5" fill="#0ea5e9" opacity="0.6" />
-                        <text x="640" y="245" text-anchor="middle" fill="white" font-size="12">API</text>
-                        
-                        <rect x="540" y="280" width="200" height="40" rx="5" fill="#0ea5e9" opacity="0.6" />
-                        <text x="640" y="305" text-anchor="middle" fill="white" font-size="12">开发环境</text>
-                        
-                        <!-- 连接线 -->
-                        <path d="M 260 150 L 350 150 Q 380 150 380 180 L 380 240 Q 380 270 410 270 L 539 270" fill="none" stroke="#0ea5e9" stroke-width="3" />
-                        <text x="400" y="210" text-anchor="middle" fill="currentColor" font-size="14">JSON-RPC</text>
-                        <text x="400" y="230" text-anchor="middle" fill="currentColor" font-size="10">双向通信</text>
-                        
-                        <!-- 数据流动动画 -->
-                        <circle r="5" fill="#0ea5e9">
-                            <animateMotion path="M 260 150 L 350 150 Q 380 150 380 180 L 380 240 Q 380 270 410 270 L 539 270" dur="3s" repeatCount="indefinite" />
-                        </circle>
-                        
-                        <circle r="5" fill="#0ea5e9">
-                            <animateMotion path="M 539 270 L 410 270 Q 380 270 380 240 L 380 180 Q 380 150 350 150 L 260 150" dur="3s" repeatCount="indefinite" begin="1.5s"/>
-                        </circle>
-                    </svg>
-                </div>
-                
-                <p class="text-center text-sm text-gray-600 dark:text-gray-400 mt-4">MCP建立AI模型与数据源之间的标准化双向通信</p>
-            </div>
-        </section>
-        
-        <!-- 优势部分 -->
-        <section id="advantages" class="mb-20 fade-in delay-200">
-            <div class="border-l-4 border-primary-500 pl-4 mb-8">
-                <h2 class="text-3xl font-bold">主要优势</h2>
-            </div>
-            
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-                <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 card-hover">
-                    <div class="flex items-center justify-center h-12 w-12 rounded-md bg-primary-100 dark:bg-primary-900 text-primary-600 dark:text-primary-400 mb-4">
-                        <i class="fas fa-sync-alt text-xl"></i>
-                    </div>
-                    <h3 class="text-lg font-semibold mb-2">标准化互操作</h3>
-                    <p class="text-gray-600 dark:text-gray-400">MCP为AI能力建立了协议标准，让通用AI助手能够与使用此协议构建的其他AI应用程序或代理无缝集成。</p>
-                </div>
-                
-                <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 card-hover">
-                    <div class="flex items-center justify-center h-12 w-12 rounded-md bg-primary-100 dark:bg-primary-900 text-primary-600 dark:text-primary-400 mb-4">
-                        <i class="fas fa-cogs text-xl"></i>
-                    </div>
-                    <h3 class="text-lg font-semibold mb-2">简化集成</h3>
-                    <p class="text-gray-600 dark:text-gray-400">MCP将M×N集成问题转变为M+N问题，开发人员不必为每个需要访问的数据源实现自定义集成，极大节省了开发时间和维护成本。</p>
-                </div>
-                
-                <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 card-hover">
-                    <div class="flex items-center justify-center h-12 w-12 rounded-md bg-primary-100 dark:bg-primary-900 text-primary-600 dark:text-primary-400 mb-4">
-                        <i class="fas fa-shield-alt text-xl"></i>
-                    </div>
-                    <h3 class="text-lg font-semibold mb-2">安全可靠</h3>
-                    <p class="text-gray-600 dark:text-gray-400">MCP通过精细权限等特性维护安全性，同时依赖于JSON-RPC 2.0和灵活传输，确保高效且安全的通信。</p>
-                </div>
-                
-                <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 card-hover">
-                    <div class="flex items-center justify-center h-12 w-12 rounded-md bg-primary-100 dark:bg-primary-900 text-primary-600 dark:text-primary-400 mb-4">
-                        <i class="fas fa-chart-line text-xl"></i>
-                    </div>
-                    <h3 class="text-lg font-semibold mb-2">可扩展性</h3>
-                    <p class="text-gray-600 dark:text-gray-400">标准化协议意味着开发者可以集成更多AI服务，同时最大限度地减少管理越来越多交互的复杂性，使系统更具可扩展性。</p>
-                </div>
-            </div>
-            
-            <!-- 引用卡片 -->
-            <div class="bg-primary-50 dark:bg-gray-700 rounded-xl p-6 sm:p-8 border-l-4 border-primary-500">
-                <div class="flex items-start">
-                    <i class="fas fa-quote-left text-3xl text-primary-400 mr-4 mt-1"></i>
-                    <blockquote class="mb-4">
-                        <p class="text-lg italic mb-4">"开源技术如Model Context Protocol是连接AI与现实世界应用程序的桥梁，确保创新是可访问的、透明的，并植根于协作。"</p>
-                        <footer class="text-sm text-gray-600 dark:text-gray-400">
-                            Dhanji R. Prasanna, Block首席技术官
-                        </footer>
-                    </blockquote>
-                </div>
-            </div>
-        </section>
-        
-        <!-- 应用场景部分 -->
-        <section id="applications" class="mb-20 fade-in delay-300">
-            <div class="border-l-4 border-primary-500 pl-4 mb-8">
-                <h2 class="text-3xl font-bold">应用场景</h2>
-            </div>
-            
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
-                <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden card-hover">
-                    <div class="h-2 bg-green-500"></div>
-                    <div class="p-6">
-                        <div class="rounded-full bg-green-100 dark:bg-green-900 w-12 h-12 flex items-center justify-center mb-4">
-                            <i class="fas fa-code text-green-600 dark:text-green-400"></i>
-                        </div>
-                        <h3 class="text-xl font-semibold mb-3">开发环境集成</h3>
-                        <p class="text-gray-600 dark:text-gray-400">Cursor等开发工具正在使用MCP增强其平台，允许AI助手直接查询数据库、访问本地文件系统，而无需手动输入架构或操作数据。</p>
-                    </div>
-                </div>
-                
-                <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden card-hover">
-                    <div class="h-2 bg-blue-500"></div>
-                    <div class="p-6">
-                        <div class="rounded-full bg-blue-100 dark:bg-blue-900 w-12 h-12 flex items-center justify-center mb-4">
-                            <i class="fas fa-database text-blue-600 dark:text-blue-400"></i>
-                        </div>
-                        <h3 class="text-xl font-semibold mb-3">企业数据连接</h3>
-                        <p class="text-gray-600 dark:text-gray-400">已有多家企业如Block和Apollo集成了MCP到他们的系统中，Microsoft也在Copilot Studio中支持MCP，使开发者能够轻松将AI应用和代理添加到系统中。</p>
-                    </div>
-                </div>
-                
-                <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden card-hover">
-                    <div class="h-2 bg-purple-500"></div>
-                    <div class="p-6">
-                        <div class="rounded-full bg-purple-100 dark:bg-purple-900 w-12 h-12 flex items-center justify-center mb-4">
-                            <i class="fas fa-puzzle-piece text-purple-600 dark:text-purple-400"></i>
-                        </div>
-                        <h3 class="text-xl font-semibold mb-3">跨平台工具拓展</h3>
-                        <p class="text-gray-600 dark:text-gray-400">Anthropic已分享了为Google Drive、Slack、GitHub、Git、Postgres和Puppeteer等流行企业系统预构建的MCP服务器，使组织能够快速连接其重要数据集。</p>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- 实现示例 -->
-            <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden">
-                <div class="bg-gray-100 dark:bg-gray-750 p-4 flex justify-between items-center">
-                    <h3 class="text-lg font-semibold">MCP服务器配置示例</h3>
-                    <div class="flex space-x-2">
-                        <span class="rounded-full w-3 h-3 bg-red-500"></span>
-                        <span class="rounded-full w-3 h-3 bg-yellow-500"></span>
-                        <span class="rounded-full w-3 h-3 bg-green-500"></span>
-                    </div>
-                </div>
-                <div class="overflow-x-auto">
-                    <pre class="language-json p-4 text-sm text-left bg-gray-50 dark:bg-gray-900 overflow-auto whitespace-pre">{
+            <h3 class="text-xl font-semibold mb-3">跨平台工具拓展</h3>
+            <p class="text-gray-600 dark:text-gray-400">Anthropic已分享了为Google
+              Drive、Slack、GitHub、Git、Postgres和Puppeteer等流行企业系统预构建的MCP服务器，使组织能够快速连接其重要数据集。</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 实现示例 -->
+      <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden">
+        <div class="bg-gray-100 dark:bg-gray-750 p-4 flex justify-between items-center">
+          <h3 class="text-lg font-semibold">MCP服务器配置示例</h3>
+          <div class="flex space-x-2">
+            <span class="rounded-full w-3 h-3 bg-red-500"></span>
+            <span class="rounded-full w-3 h-3 bg-yellow-500"></span>
+            <span class="rounded-full w-3 h-3 bg-green-500"></span>
+          </div>
+        </div>
+        <div class="overflow-x-auto">
+          <pre class="language-json p-4 text-sm text-left bg-gray-50 dark:bg-gray-900 overflow-auto whitespace-pre">{
   "<span class="text-purple-600">mcpServers</span>": {
     "<span class="text-blue-600">server-name</span>": {
       "<span class="text-green-600">command</span>": "<span class="text-orange-600">npx</span>",
@@ -504,266 +573,290 @@
     }
   }
 }</pre>
-                </div>
-                <div class="p-4 border-t border-gray-200 dark:border-gray-700">
-                    <p class="text-sm text-gray-600 dark:text-gray-400">MCP配置文件使用JSON格式，此示例展示了使用stdio格式的MCP服务器，Cursor会自动为你运行这个进程。</p>
-                </div>
-            </div>
-        </section>
-        
-        <!-- 生态系统 -->
-        <section class="mb-20 fade-in delay-400">
-            <div class="border-l-4 border-primary-500 pl-4 mb-8">
-                <h2 class="text-3xl font-bold">生态系统</h2>
-            </div>
-            
-            <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 sm:p-8">
-                <div class="mb-8">
-                    <h3 class="text-xl font-semibold mb-4">已支持MCP的公司和工具</h3>
-                    
-                    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
-                        <div class="bg-gray-50 dark:bg-gray-750 rounded-lg p-4 flex flex-col items-center justify-center text-center">
-                            <i class="fab fa-microsoft text-2xl text-blue-500 mb-2"></i>
-                            <span class="font-medium">Microsoft Copilot</span>
-                        </div>
-                        <div class="bg-gray-50 dark:bg-gray-750 rounded-lg p-4 flex flex-col items-center justify-center text-center">
-                            <i class="fas fa-edit text-2xl text-indigo-500 mb-2"></i>
-                            <span class="font-medium">Cursor</span>
-                        </div>
-                        <div class="bg-gray-50 dark:bg-gray-750 rounded-lg p-4 flex flex-col items-center justify-center text-center">
-                            <i class="fas fa-cube text-2xl text-purple-500 mb-2"></i>
-                            <span class="font-medium">Block</span>
-                        </div>
-                        <div class="bg-gray-50 dark:bg-gray-750 rounded-lg p-4 flex flex-col items-center justify-center text-center">
-                            <i class="fas fa-rocket text-2xl text-red-500 mb-2"></i>
-                            <span class="font-medium">Apollo</span>
-                        </div>
-                        <div class="bg-gray-50 dark:bg-gray-750 rounded-lg p-4 flex flex-col items-center justify-center text-center">
-                            <i class="fas fa-terminal text-2xl text-green-500 mb-2"></i>
-                            <span class="font-medium">Replit</span>
-                        </div>
-                        <div class="bg-gray-50 dark:bg-gray-750 rounded-lg p-4 flex flex-col items-center justify-center text-center">
-                            <i class="fas fa-code text-2xl text-orange-500 mb-2"></i>
-                            <span class="font-medium">Zed</span>
-                        </div>
-                        <div class="bg-gray-50 dark:bg-gray-750 rounded-lg p-4 flex flex-col items-center justify-center text-center">
-                            <i class="fas fa-search text-2xl text-blue-500 mb-2"></i>
-                            <span class="font-medium">Sourcegraph</span>
-                        </div>
-                        <div class="bg-gray-50 dark:bg-gray-750 rounded-lg p-4 flex flex-col items-center justify-center text-center">
-                            <i class="fas fa-brain text-2xl text-purple-500 mb-2"></i>
-                            <span class="font-medium">Codeium</span>
-                        </div>
-                    </div>
-                </div>
-                
-                <div>
-                    <h3 class="text-xl font-semibold mb-4">可用的SDK</h3>
-                    
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                        <div class="bg-gray-50 dark:bg-gray-750 rounded-lg p-4">
-                            <div class="flex items-center mb-3">
-                                <i class="fab fa-js text-yellow-500 text-xl mr-2"></i>
-                                <h4 class="font-medium">JavaScript/TypeScript</h4>
-                            </div>
-                            <p class="text-sm text-gray-600 dark:text-gray-400">官方JavaScript和TypeScript SDK</p>
-                        </div>
-                        <div class="bg-gray-50 dark:bg-gray-750 rounded-lg p-4">
-                            <div class="flex items-center mb-3">
-                                <i class="fab fa-python text-blue-500 text-xl mr-2"></i>
-                                <h4 class="font-medium">Python</h4>
-                            </div>
-                            <p class="text-sm text-gray-600 dark:text-gray-400">官方Python SDK</p>
-                        </div>
-                        <div class="bg-gray-50 dark:bg-gray-750 rounded-lg p-4">
-                            <div class="flex items-center mb-3">
-                                <i class="fab fa-java text-red-500 text-xl mr-2"></i>
-                                <h4 class="font-medium">Java</h4>
-                            </div>
-                            <p class="text-sm text-gray-600 dark:text-gray-400">官方Java SDK，与Spring AI合作维护</p>
-                        </div>
-                        <div class="bg-gray-50 dark:bg-gray-750 rounded-lg p-4">
-                            <div class="flex items-center mb-3">
-                                <svg class="w-5 h-5 mr-2" viewBox="0 0 24 24" fill="#7F52FF">
-                                    <path d="M0 0h24v24H0V0z" fill="none"/>
-                                    <path d="M17.6 11.2c-.6 0-1.1.2-1.5.6l-7-7H4v5.1l7 7c-.4.4-.6.9-.6 1.5 0 1.1.9 2 2 2s2-.9 2-2c0-.6-.2-1.1-.6-1.5l2.7-2.7v-2L17.6 11.2zM8.2 4l7 7-2.7 2.7-7-7V4h2.9z"/>
-                                </svg>
-                                <h4 class="font-medium">Kotlin</h4>
-                            </div>
-                            <p class="text-sm text-gray-600 dark:text-gray-400">官方Kotlin SDK，与JetBrains合作维护</p>
-                        </div>
-                        <div class="bg-gray-50 dark:bg-gray-750 rounded-lg p-4">
-                            <div class="flex items-center mb-3">
-                                <i class="fab fa-swift text-orange-500 text-xl mr-2"></i>
-                                <h4 class="font-medium">Swift</h4>
-                            </div>
-                            <p class="text-sm text-gray-600 dark:text-gray-400">Swift SDK用于构建MCP服务器和客户端</p>
-                        </div>
-                        <div class="bg-gray-50 dark:bg-gray-750 rounded-lg p-4">
-                            <div class="flex items-center mb-3">
-                                <i class="fab fa-microsoft text-blue-500 text-xl mr-2"></i>
-                                <h4 class="font-medium">.NET</h4>
-                            </div>
-                            <p class="text-sm text-gray-600 dark:text-gray-400">mcpdotnet用于.NET环境集成</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-    </main>
-
-    <!-- 页脚 -->
-    <footer class="bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 py-12">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex flex-col md:flex-row justify-between items-center">
-                <div class="mb-8 md:mb-0">
-                    <div class="flex items-center mb-4">
-                        <i class="fas fa-project-diagram text-primary-600 dark:text-primary-400 text-2xl mr-2"></i>
-                        <span class="font-bold text-xl">Model Context Protocol</span>
-                    </div>
-                    <p class="text-gray-600 dark:text-gray-400 max-w-md">连接AI模型与数据源的开放标准协议，打破信息孤岛，实现真正的互联互通。</p>
-                </div>
-                
-                <div class="grid grid-cols-2 gap-8 sm:grid-cols-3 md:grid-cols-3">
-                    <div>
-                        <h3 class="text-sm font-semibold text-gray-500 dark:text-gray-300 uppercase tracking-wider mb-4">资源</h3>
-                        <ul class="space-y-3">
-                            <li>
-                                <a href="https://modelcontextprotocol.io/introduction" target="_blank" class="text-gray-600 dark:text-gray-400 hover:text-primary-600 dark:hover:text-primary-400">
-                                    官方文档
-                                </a>
-                            </li>
-                            <li>
-                                <a href="https://github.com/modelcontextprotocol" target="_blank" class="text-gray-600 dark:text-gray-400 hover:text-primary-600 dark:hover:text-primary-400">
-                                    GitHub 仓库
-                                </a>
-                            </li>
-                            <li>
-                                <a href="https://www.anthropic.com/news/model-context-protocol" target="_blank" class="text-gray-600 dark:text-gray-400 hover:text-primary-600 dark:hover:text-primary-400">
-                                    发布公告
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                    
-                    <div>
-                        <h3 class="text-sm font-semibold text-gray-500 dark:text-gray-300 uppercase tracking-wider mb-4">社区</h3>
-                        <ul class="space-y-3">
-                            <li>
-                                <a href="https://github.com/modelcontextprotocol/modelcontextprotocol.github.io/discussions" target="_blank" class="text-gray-600 dark:text-gray-400 hover:text-primary-600 dark:hover:text-primary-400">
-                                    讨论区
-                                </a>
-                            </li>
-                            <li>
-                                <a href="https://github.com/modelcontextprotocol/modelcontextprotocol.github.io/blob/main/CONTRIBUTING.md" target="_blank" class="text-gray-600 dark:text-gray-400 hover:text-primary-600 dark:hover:text-primary-400">
-                                    贡献指南
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                    
-                    <div class="col-span-2 sm:col-span-1">
-                        <h3 class="text-sm font-semibold text-gray-500 dark:text-gray-300 uppercase tracking-wider mb-4">关注我们</h3>
-                        <div class="flex space-x-4">
-                            <a href="https://github.com/modelcontextprotocol" target="_blank" class="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-white">
-                                <i class="fab fa-github text-xl"></i>
-                            </a>
-                            <a href="https://twitter.com/AnthropicAI" target="_blank" class="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-white">
-                                <i class="fab fa-twitter text-xl"></i>
-                            </a>
-                            <a href="https://www.linkedin.com/company/anthropic" target="_blank" class="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-white">
-                                <i class="fab fa-linkedin text-xl"></i>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="mt-12 pt-8 border-t border-gray-200 dark:border-gray-700">
-                <div class="flex flex-col md:flex-row justify-between items-center">
-                    <div class="mb-4 md:mb-0">
-                        <p class="text-gray-500 dark:text-gray-400 text-sm">
-                            © 2025 作者信息. 保留所有权利.
-                        </p>
-                    </div>
-                    <div class="flex space-x-4">
-                        <a href="#" class="text-gray-500 dark:text-gray-400 text-sm hover:text-primary-600 dark:hover:text-primary-400">
-                            隐私政策
-                        </a>
-                        <a href="#" class="text-gray-500 dark:text-gray-400 text-sm hover:text-primary-600 dark:hover:text-primary-400">
-                            使用条款
-                        </a>
-                    </div>
-                </div>
-            </div>
         </div>
-    </footer>
+        <div class="p-4 border-t border-gray-200 dark:border-gray-700">
+          <p class="text-sm text-gray-600 dark:text-gray-400">MCP配置文件使用JSON格式，此示例展示了使用stdio格式的MCP服务器，Cursor会自动为你运行这个进程。
+          </p>
+        </div>
+      </div>
+    </section>
 
-    <!-- 返回顶部按钮 -->
-    <button id="back-to-top" class="fixed bottom-6 right-6 p-3 rounded-full bg-primary-600 text-white shadow-lg opacity-0 transition-opacity duration-300 hover:bg-primary-700 focus:outline-none">
-        <i class="fas fa-arrow-up"></i>
-    </button>
+    <!-- 生态系统 -->
+    <section id="ecosystem" class="mb-20 fade-in delay-400">
+      <div class="border-l-4 border-primary-500 pl-4 mb-8">
+        <h2 class="text-3xl font-bold">生态系统</h2>
+      </div>
 
-    <script>
-        // 返回顶部按钮
-        const backToTopButton = document.getElementById('back-to-top');
-        
-        window.addEventListener('scroll', () => {
-            if (window.pageYOffset > 300) {
-                backToTopButton.classList.remove('opacity-0');
-                backToTopButton.classList.add('opacity-100');
-            } else {
-                backToTopButton.classList.remove('opacity-100');
-                backToTopButton.classList.add('opacity-0');
+      <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 sm:p-8">
+        <div class="mb-8">
+          <h3 class="text-xl font-semibold mb-4">已支持MCP的公司和工具</h3>
+
+          <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+            <div
+              class="bg-gray-50 dark:bg-gray-750 rounded-lg p-4 flex flex-col items-center justify-center text-center">
+              <i class="fab fa-microsoft text-2xl text-blue-500 mb-2"></i>
+              <span class="font-medium">Microsoft Copilot</span>
+            </div>
+            <div
+              class="bg-gray-50 dark:bg-gray-750 rounded-lg p-4 flex flex-col items-center justify-center text-center">
+              <i class="fas fa-edit text-2xl text-indigo-500 mb-2"></i>
+              <span class="font-medium">Cursor</span>
+            </div>
+            <div
+              class="bg-gray-50 dark:bg-gray-750 rounded-lg p-4 flex flex-col items-center justify-center text-center">
+              <i class="fas fa-cube text-2xl text-purple-500 mb-2"></i>
+              <span class="font-medium">Block</span>
+            </div>
+            <div
+              class="bg-gray-50 dark:bg-gray-750 rounded-lg p-4 flex flex-col items-center justify-center text-center">
+              <i class="fas fa-rocket text-2xl text-red-500 mb-2"></i>
+              <span class="font-medium">Apollo</span>
+            </div>
+            <div
+              class="bg-gray-50 dark:bg-gray-750 rounded-lg p-4 flex flex-col items-center justify-center text-center">
+              <i class="fas fa-terminal text-2xl text-green-500 mb-2"></i>
+              <span class="font-medium">Replit</span>
+            </div>
+            <div
+              class="bg-gray-50 dark:bg-gray-750 rounded-lg p-4 flex flex-col items-center justify-center text-center">
+              <i class="fas fa-code text-2xl text-orange-500 mb-2"></i>
+              <span class="font-medium">Zed</span>
+            </div>
+            <div
+              class="bg-gray-50 dark:bg-gray-750 rounded-lg p-4 flex flex-col items-center justify-center text-center">
+              <i class="fas fa-search text-2xl text-blue-500 mb-2"></i>
+              <span class="font-medium">Sourcegraph</span>
+            </div>
+            <div
+              class="bg-gray-50 dark:bg-gray-750 rounded-lg p-4 flex flex-col items-center justify-center text-center">
+              <i class="fas fa-brain text-2xl text-purple-500 mb-2"></i>
+              <span class="font-medium">Codeium</span>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <h3 class="text-xl font-semibold mb-4">可用的SDK</h3>
+
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div class="bg-gray-50 dark:bg-gray-750 rounded-lg p-4">
+              <div class="flex items-center mb-3">
+                <i class="fab fa-js text-yellow-500 text-xl mr-2"></i>
+                <h4 class="font-medium">JavaScript/TypeScript</h4>
+              </div>
+              <p class="text-sm text-gray-600 dark:text-gray-400">官方JavaScript和TypeScript SDK</p>
+            </div>
+            <div class="bg-gray-50 dark:bg-gray-750 rounded-lg p-4">
+              <div class="flex items-center mb-3">
+                <i class="fab fa-python text-blue-500 text-xl mr-2"></i>
+                <h4 class="font-medium">Python</h4>
+              </div>
+              <p class="text-sm text-gray-600 dark:text-gray-400">官方Python SDK</p>
+            </div>
+            <div class="bg-gray-50 dark:bg-gray-750 rounded-lg p-4">
+              <div class="flex items-center mb-3">
+                <i class="fab fa-java text-red-500 text-xl mr-2"></i>
+                <h4 class="font-medium">Java</h4>
+              </div>
+              <p class="text-sm text-gray-600 dark:text-gray-400">官方Java SDK，与Spring AI合作维护</p>
+            </div>
+            <div class="bg-gray-50 dark:bg-gray-750 rounded-lg p-4">
+              <div class="flex items-center mb-3">
+                <svg class="w-5 h-5 mr-2" viewBox="0 0 24 24" fill="#7F52FF">
+                  <path d="M0 0h24v24H0V0z" fill="none" />
+                  <path
+                    d="M17.6 11.2c-.6 0-1.1.2-1.5.6l-7-7H4v5.1l7 7c-.4.4-.6.9-.6 1.5 0 1.1.9 2 2 2s2-.9 2-2c0-.6-.2-1.1-.6-1.5l2.7-2.7v-2L17.6 11.2zM8.2 4l7 7-2.7 2.7-7-7V4h2.9z" />
+                </svg>
+                <h4 class="font-medium">Kotlin</h4>
+              </div>
+              <p class="text-sm text-gray-600 dark:text-gray-400">官方Kotlin SDK，与JetBrains合作维护</p>
+            </div>
+            <div class="bg-gray-50 dark:bg-gray-750 rounded-lg p-4">
+              <div class="flex items-center mb-3">
+                <i class="fab fa-swift text-orange-500 text-xl mr-2"></i>
+                <h4 class="font-medium">Swift</h4>
+              </div>
+              <p class="text-sm text-gray-600 dark:text-gray-400">Swift SDK用于构建MCP服务器和客户端</p>
+            </div>
+            <div class="bg-gray-50 dark:bg-gray-750 rounded-lg p-4">
+              <div class="flex items-center mb-3">
+                <i class="fab fa-microsoft text-blue-500 text-xl mr-2"></i>
+                <h4 class="font-medium">.NET</h4>
+              </div>
+              <p class="text-sm text-gray-600 dark:text-gray-400">mcpdotnet用于.NET环境集成</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- 页脚 -->
+  <footer class="bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 py-12">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex flex-col md:flex-row justify-between items-center">
+        <div class="mb-8 md:mb-0">
+          <div class="flex items-center mb-4">
+            <i class="fas fa-project-diagram text-primary-600 dark:text-primary-400 text-2xl mr-2"></i>
+            <span class="font-bold text-xl">Model Context Protocol</span>
+          </div>
+          <p class="text-gray-600 dark:text-gray-400 max-w-md">连接AI模型与数据源的开放标准协议，打破信息孤岛，实现真正的互联互通。</p>
+        </div>
+
+        <div class="grid grid-cols-2 gap-8 sm:grid-cols-3 md:grid-cols-3">
+          <div>
+            <h3 class="text-sm font-semibold text-gray-500 dark:text-gray-300 uppercase tracking-wider mb-4">资源</h3>
+            <ul class="space-y-3">
+              <li>
+                <a href="https://modelcontextprotocol.io/introduction" target="_blank"
+                  class="text-gray-600 dark:text-gray-400 hover:text-primary-600 dark:hover:text-primary-400">
+                  官方文档
+                </a>
+              </li>
+              <li>
+                <a href="https://github.com/modelcontextprotocol" target="_blank"
+                  class="text-gray-600 dark:text-gray-400 hover:text-primary-600 dark:hover:text-primary-400">
+                  GitHub 仓库
+                </a>
+              </li>
+              <li>
+                <a href="https://www.anthropic.com/news/model-context-protocol" target="_blank"
+                  class="text-gray-600 dark:text-gray-400 hover:text-primary-600 dark:hover:text-primary-400">
+                  发布公告
+                </a>
+              </li>
+            </ul>
+          </div>
+
+          <div>
+            <h3 class="text-sm font-semibold text-gray-500 dark:text-gray-300 uppercase tracking-wider mb-4">社区</h3>
+            <ul class="space-y-3">
+              <li>
+                <a href="https://github.com/modelcontextprotocol/modelcontextprotocol.github.io/discussions"
+                  target="_blank"
+                  class="text-gray-600 dark:text-gray-400 hover:text-primary-600 dark:hover:text-primary-400">
+                  讨论区
+                </a>
+              </li>
+              <li>
+                <a href="https://github.com/modelcontextprotocol/modelcontextprotocol.github.io/blob/main/CONTRIBUTING.md"
+                  target="_blank"
+                  class="text-gray-600 dark:text-gray-400 hover:text-primary-600 dark:hover:text-primary-400">
+                  贡献指南
+                </a>
+              </li>
+            </ul>
+          </div>
+
+          <div class="col-span-2 sm:col-span-1">
+            <h3 class="text-sm font-semibold text-gray-500 dark:text-gray-300 uppercase tracking-wider mb-4">关注我们</h3>
+            <div class="flex space-x-4">
+              <a href="https://github.com/modelcontextprotocol" target="_blank"
+                class="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-white">
+                <i class="fab fa-github text-xl"></i>
+              </a>
+              <a href="https://twitter.com/AnthropicAI" target="_blank"
+                class="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-white">
+                <i class="fab fa-twitter text-xl"></i>
+              </a>
+              <a href="https://www.linkedin.com/company/anthropic" target="_blank"
+                class="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-white">
+                <i class="fab fa-linkedin text-xl"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="mt-12 pt-8 border-t border-gray-200 dark:border-gray-700">
+        <div class="flex flex-col md:flex-row justify-between items-center">
+          <div class="mb-4 md:mb-0">
+            <p class="text-gray-500 dark:text-gray-400 text-sm">
+              © 2025 作者信息. 保留所有权利.
+            </p>
+          </div>
+          <div class="flex space-x-4">
+            <a href="#"
+              class="text-gray-500 dark:text-gray-400 text-sm hover:text-primary-600 dark:hover:text-primary-400">
+              隐私政策
+            </a>
+            <a href="#"
+              class="text-gray-500 dark:text-gray-400 text-sm hover:text-primary-600 dark:hover:text-primary-400">
+              使用条款
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- 返回顶部按钮 -->
+  <button id="back-to-top"
+    class="fixed bottom-6 right-6 p-3 rounded-full bg-primary-600 text-white shadow-lg opacity-0 transition-opacity duration-300 hover:bg-primary-700 focus:outline-none">
+    <i class="fas fa-arrow-up"></i>
+  </button>
+
+  <script>
+    // 返回顶部按钮
+    const backToTopButton = document.getElementById('back-to-top');
+
+    window.addEventListener('scroll', () => {
+      if (window.pageYOffset > 300) {
+        backToTopButton.classList.remove('opacity-0');
+        backToTopButton.classList.add('opacity-100');
+      } else {
+        backToTopButton.classList.remove('opacity-100');
+        backToTopButton.classList.add('opacity-0');
+      }
+    });
+
+    backToTopButton.addEventListener('click', () => {
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
+    });
+
+    // 导航链接平滑滚动
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+
+        const targetId = this.getAttribute('href');
+        if (targetId === '#') return;
+
+        const targetElement = document.querySelector(targetId);
+        if (targetElement) {
+          targetElement.scrollIntoView({
+            behavior: 'smooth'
+          });
+        }
+      });
+    });
+
+    // 延迟加载动画
+    window.addEventListener('load', () => {
+      document.querySelectorAll('.fade-in').forEach(el => {
+        el.style.opacity = '0';
+
+        const observer = new IntersectionObserver(entries => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              setTimeout(() => {
+                entry.target.style.opacity = '1';
+                entry.target.style.transform = 'translateY(0)';
+              }, 100);
+              observer.unobserve(entry.target);
             }
+          });
+        }, {
+          threshold: 0.1
         });
-        
-        backToTopButton.addEventListener('click', () => {
-            window.scrollTo({
-                top: 0,
-                behavior: 'smooth'
-            });
-        });
-        
-        // 导航链接平滑滚动
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                
-                const targetId = this.getAttribute('href');
-                if (targetId === '#') return;
-                
-                const targetElement = document.querySelector(targetId);
-                if (targetElement) {
-                    targetElement.scrollIntoView({
-                        behavior: 'smooth'
-                    });
-                }
-            });
-        });
-        
-        // 延迟加载动画
-        window.addEventListener('load', () => {
-            document.querySelectorAll('.fade-in').forEach(el => {
-                el.style.opacity = '0';
-                
-                const observer = new IntersectionObserver(entries => {
-                    entries.forEach(entry => {
-                        if (entry.isIntersecting) {
-                            setTimeout(() => {
-                                entry.target.style.opacity = '1';
-                                entry.target.style.transform = 'translateY(0)';
-                            }, 100);
-                            observer.unobserve(entry.target);
-                        }
-                    });
-                }, {
-                    threshold: 0.1
-                });
-                
-                observer.observe(el);
-            });
-        });
-    </script>
+
+        observer.observe(el);
+      });
+    });
+  </script>
 </body>
+
 </html>
